@@ -269,11 +269,19 @@
             updateStats();
         }
 
-        // 页面加载完成自动渲染数据
+        // 立即执行渲染，避免加载延迟
+        renderHistory();
+        updateStats();
+        // 加载最新内容到最新区域
+        if (updateHistory.length > 0) {
+            const latest = updateHistory[0];
+            document.getElementById('latestContent').innerHTML = `<h3>${latest.time} 更新</h3><div class="prose max-w-none">${latest.content.replace(/\n/g, '<br>')}</div>`;
+        }
+
+        // 页面加载完成再次确认渲染
         window.onload = function() {
             renderHistory();
             updateStats();
-            // 加载最新内容到最新区域
             if (updateHistory.length > 0) {
                 const latest = updateHistory[0];
                 document.getElementById('latestContent').innerHTML = `<h3>${latest.time} 更新</h3><div class="prose max-w-none">${latest.content.replace(/\n/g, '<br>')}</div>`;
